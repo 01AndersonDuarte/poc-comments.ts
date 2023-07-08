@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as commentsService from "@/service/comments.service";
-import { UpComment } from "../protocols";
+import { Comment, UpComment, DelComment } from "../protocols";
 import httpStatus from "http-status";
 
 export async function getComments(req: Request, res: Response) {
@@ -17,17 +17,16 @@ export async function upComments(req: Request, res: Response) {
 }
 
 export async function delComments(req: Request, res: Response) {
-    const id = req.body.id as number;
+    const comment = req.body as DelComment;
 
-    await commentsService.delComments(id);
+    await commentsService.delComments(comment);
 
     res.status(httpStatus.OK).send("Comentário apagado com sucesso.");
 }
 
 export async function postComments(req: Request, res: Response) {
-    const comment = req.body.comment as string;
+    const comment = req.body as Comment;
 
     await commentsService.postComments(comment);
     res.status(201).send("Sucesso!");
-
 }

@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Comment {
+  id        Int       @id @default(autoincrement())
+  comment   String    @db.VarChar(200)
+  user User @relation(fields: [userId], references: [id])
+  createdAt DateTime? @default(now()) @db.Timestamp(6)
+  userId    Int
+
+  @@map("comments")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  userName String @db.VarChar(20) @unique
+  comments Comment[]
+
+  @@map("users")
+}
